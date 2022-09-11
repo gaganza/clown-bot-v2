@@ -39,6 +39,8 @@ app.post(
     console.log("response", res);
     const interaction = req.body;
 
+    console.log(interaction);
+
     if (interaction.type === InteractionType.MESSAGE_COMPONENT) {
       console.log(interaction.data.name);
     }
