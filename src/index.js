@@ -35,6 +35,8 @@ app.post(
   "/interactions",
   verifyKeyMiddleware(auth.public_key),
   async (req, res) => {
+    console.log("request", req);
+    console.log("response", res);
     const interaction = req.body;
 
     if (interaction.type === InteractionType.MESSAGE_COMPONENT) {
