@@ -29,7 +29,7 @@ const DiscordApi = axios.create({
   },
 });
 
-console.log(auth.public_key);
+console.log(auth.public_key, auth.token);
 
 app.post(
   "/interactions",
