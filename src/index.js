@@ -39,7 +39,7 @@ const commands = [
     description: "Replies with pong.",
   },
   {
-    name: "honk",
+    name: "honk-honk",
     description:
       "Makes a clown honking noise in the active voice channel of the user that pings the bot.",
   },
@@ -62,19 +62,15 @@ app.post(
 
       if (interaction.data.name === "ping") {
         return res.send({
-          type: InteractionType.CHANNEL_MESSAGE_WITH_SOURCE,
-          data: {
-            content: "pong",
-          },
+          type: InteractionResponseType.PONG,
+          data: { content: "pong" },
         });
       }
 
-      if (interaction.data.name === "honk") {
+      if (interaction.data.name === "honk-honk") {
         return res.send({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-          data: {
-            content: "Honk honk!",
-          },
+          data: { content: "Honk honk!" },
         });
       }
     }
