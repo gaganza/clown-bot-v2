@@ -42,7 +42,7 @@ const commands = [
   },
 ];
 
-await registerCommands(auth.application_id, commands);
+console.log(await registerCommands(auth.application_id, commands));
 
 app.post(
   "/interactions",
