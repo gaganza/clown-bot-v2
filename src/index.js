@@ -7,7 +7,11 @@ let auth;
 try {
   auth = require("./auth.json");
 } catch (error) {
-  auth = { token: process.env.TOKEN, public_key: process.env.PUBLIC_KEY };
+  auth = {
+    token: process.env.TOKEN,
+    public_key: process.env.PUBLIC_KEY,
+    application_id: process.env.APPLICATION_ID,
+  };
 }
 
 const app = express();
@@ -29,22 +33,45 @@ const DiscordApi = axios.create({
   },
 });
 
-console.log(`public key: ${auth.public_key}`, `token: ${auth.token}`);
+const commands = [
+  {
+    name: "honk-honk",
+    description:
+      "Makes a clown honking noise in the active voice channel of the user that pings the bot.",
+    options: [],
+  },
+];
+
+await registerCommands(auth.application_id, commands);
 
 app.post(
   "/interactions",
   verifyKeyMiddleware(auth.public_key),
   async (req, res) => {
-    console.log("request", req);
-    console.log("response", res);
     const interaction = req.body;
 
     console.log(interaction);
 
-    if (interaction.type === InteractionType.MESSAGE_COMPONENT) {
+    if (interaction.type === InteractionType.APPLICATION_COMMAND) {
       console.log(interaction.data.name);
+
+      if (interaction.data.name === "honk-honk") {
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: "Honk honk!",
+          },
+        });
+      }
     }
   }
 );
 
 app.listen(PORT, () => {});
+
+async function registerCommands(applicationId, commands) {
+  return await DiscordApi.put(
+    `/applications/${applicationId}/commands`,
+    commands
+  );
+}
