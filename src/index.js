@@ -23,7 +23,7 @@ const {
 } = require("discord-interactions");
 
 const DiscordApi = axios.create({
-  baseURL: "https://discordapp.com/api/",
+  baseURL: "https://discord.com/api/v10",
   timeout: 3000,
   headers: {
     "Access-Control-Allow-Origin": "*",
@@ -35,14 +35,19 @@ const DiscordApi = axios.create({
 
 const commands = [
   {
-    name: "honk-honk",
+    name: "ping",
+    description: "Replies with pong.",
+  },
+  {
+    name: "honk",
     description:
       "Makes a clown honking noise in the active voice channel of the user that pings the bot.",
-    options: [],
   },
 ];
 
-console.log(await registerCommands(auth.application_id, commands));
+DiscordApi.put(`/applications/${auth.application_id}/commands`, commands)
+  .then((response) => console.log(response))
+  .catch((err) => console.log(err));
 
 app.post(
   "/interactions",
@@ -55,7 +60,16 @@ app.post(
     if (interaction.type === InteractionType.APPLICATION_COMMAND) {
       console.log(interaction.data.name);
 
-      if (interaction.data.name === "honk-honk") {
+      if (interaction.data.name === "ping") {
+        return res.send({
+          type: InteractionType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: {
+            content: "pong",
+          },
+        });
+      }
+
+      if (interaction.data.name === "honk") {
         return res.send({
           type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
           data: {
@@ -68,10 +82,3 @@ app.post(
 );
 
 app.listen(PORT, () => {});
-
-async function registerCommands(applicationId, commands) {
-  return await DiscordApi.put(
-    `/applications/${applicationId}/commands`,
-    commands
-  );
-}
