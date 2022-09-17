@@ -10,6 +10,7 @@ export const honk: Command = {
     ),
   run: async (res, interaction) => {
     console.log("testing");
+    console.log(interaction);
 
     res.send({
       type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
