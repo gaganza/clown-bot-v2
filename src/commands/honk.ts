@@ -12,7 +12,7 @@ export const honk: Command = {
     console.log("testing");
 
     res.send({
-      type: InteractionResponseType.DEFERRED_CHANNEL_MESSAGE_WITH_SOURCE,
+      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
       data: { content: "Honk honk!" },
     });
   },
