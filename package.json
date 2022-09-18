@@ -7,6 +7,7 @@
   "main": "build/index.js",
   "scripts": {
     "build": "tsc",
+    "postbuild": "node ./build/register.js",
     "start": "node -r dotenv/config ./build/index.js"
   },
   "dependencies": {
